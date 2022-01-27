@@ -1,4 +1,7 @@
+
+
 --Create Stored Procedure for inserting data in new row of dbo.Address--
+DROP PROCEDURE IF EXISTS dbo.spInsertIntoAddress
 
 CREATE PROCEDURE spInsertIntoAddress	
 
@@ -13,15 +16,17 @@ CREATE PROCEDURE spInsertIntoAddress
 		INSERT INTO dbo.Address(Address, City, PostalCode, ProvinceID)
 		VALUES (@Address, @City, @PostalCode, @ProvinceID)
 
-	SELECT*FROM dbo.Address
+		SELECT*FROM dbo.Address
 
 	END
 
 	--Execution of Stored Procedure--
-EXEC dbo.spInsertIntoAddress '321 Albert St', 'Waterloo', 'N2L 5V1', 5
+EXEC dbo.spInsertIntoAddress '321 Albert St', 'Waterloo', 'N2L 5V1', 9
+
 
 
 --Create Stored Procedure to get data from dbo.Address by addressID--
+DROP PROCEDURE IF EXISTS dbo.sp_GetAddressByID
 
 CREATE PROCEDURE sp_GetAddressByID
 
@@ -30,9 +35,9 @@ CREATE PROCEDURE sp_GetAddressByID
 	AS
 	BEGIN
 
-	SELECT * FROM dbo.Address
-	WHERE
-	AddressID =@AddressId
+		SELECT * FROM dbo.Address
+		WHERE
+		AddressID =@AddressId
 
 	END
 
@@ -41,7 +46,29 @@ CREATE PROCEDURE sp_GetAddressByID
 EXECUTE sp_GetAddressByID 6
 
 
+
+--Create Stored Procedure to get list of Addresses from the same province in dbo.Address by ProvinceAbbreviation--
+DROP PROCEDURE IF EXISTS dbo.sp_GetAddressesByProvince
+CREATE PROCEDURE sp_GetAddressesByProvince
+	
+	@ProvinceAbbreviation VARCHAR(25)
+
+	AS
+	BEGIN
+
+		WITH CTE AS (SELECT ProvinceAbbreviation, a.* FROM dbo.Province p INNER JOIN dbo.Address a ON P.ProvinceID = a.ProvinceID )
+
+		SELECT * FROM CTE
+		WHERE ProvinceAbbreviation = @ProvinceAbbreviation
+
+	END
+
+--Execution of Stored Procedure--
+
+EXECUTE  sp_GetAddressesByProvince 'ON'
+
 --Create Stored Procedure to count total number of addresses from dbo.Address--
+DROP PROCEDURE IF EXISTS dbo.sp_GetAddressCount
 
 CREATE PROCEDURE sp_GetAddressCount
 
@@ -50,8 +77,8 @@ CREATE PROCEDURE sp_GetAddressCount
 	AS
 	BEGIN
 
-	SELECT @AddressCount = COUNT(*) FROM dbo.Address
-	SELECT @AddressCount AS 'Total Number of Addresses';
+		SELECT @AddressCount = COUNT(*) FROM dbo.Address
+		SELECT @AddressCount AS 'Total Number of Addresses';
 
 	END
 
@@ -61,7 +88,7 @@ EXECUTE sp_GetAddressCount @Count
 
 
 --Create Stored Procedure for updating data in dbo.Address by AddressID--
-
+DROP PROCEDURE IF EXISTS dbo.sp_UpdateAddressByAddressID
 CREATE PROCEDURE sp_UpdateAddressByAddressID
 
 	@AddressId INT,
@@ -81,4 +108,28 @@ CREATE PROCEDURE sp_UpdateAddressByAddressID
 			ProvinceID = @ProvinceID
 		WHERE
 			AddressID = @AddressId
+
+			SELECT *FROM dbo.Address
 	END
+
+	--Execution of Stored Procedure--
+EXECUTE sp_UpdateAddressByAddressID 2,'210 Albert St', Waterloo, 'L5C 3V5',3
+
+--Create Stored Procedure to delete data in dbo.Address by AddressID--
+DROP PROCEDURE IF EXISTS dbo.sp_DeleteAddressByAddressID
+CREATE PROCEDURE sp_DeleteAddressByAddressID
+
+	@AddressId INT
+
+	AS
+	BEGIN
+
+		DELETE FROM Address 
+		WHERE
+			AddressID = @AddressId
+
+			SELECT *FROM dbo.Address
+	END
+
+	--Execution of Stored Procedure--
+EXECUTE sp_DeleteAddressByAddressID 2
