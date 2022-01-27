@@ -36,7 +36,7 @@ create procedure sp_GetProvinceCount
 	begin
 
 	select @provinceCount = COUNT(*) from dbo.Province
-	select @provinceCount AS 'Number od Provinces';
+	select @provinceCount AS 'Number of Provinces';
 
 	end
 
