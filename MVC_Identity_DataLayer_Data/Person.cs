@@ -82,7 +82,7 @@ namespace MVC_Identity_DataLayer_Data
         
         
 
-        public PersonDetails InsertPerson()
+        public void InsertPerson()
         {
             // To run this query with output paramter, create a stored procedure with PersonID as output parameter
 
@@ -104,13 +104,13 @@ namespace MVC_Identity_DataLayer_Data
             outputParameter.SqlDbType = System.Data.SqlDbType.Int;
             outputParameter.Direction = System.Data.ParameterDirection.Output;
             cmd.Parameters.Add(outputParameter);
-            cmd.ExecuteNonQuery();
-
-            lblMessess.Text = "ID of a new person inserted is" + " " + outputParameter.Value.ToString() +".";
+           
 
             try
             {
                 conn.Open();
+                cmd.ExecuteNonQuery();
+                lblMessess.Text = "ID of a new person inserted is" + " " + outputParameter.Value.ToString() + ".";
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@ namespace MVC_Identity_DataLayer_Data
             }
         }
 
-        public PersonDetails DeletePerson(int id)
+        public void DeletePerson(int id)
         {
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_delete__person", conn);
@@ -130,14 +130,11 @@ namespace MVC_Identity_DataLayer_Data
 
             cmd.Parameters.AddWithValue("@PersonID", id);
 
-            //SqlParameter outputParameter = new SqlParameter();
-            //outputParameter.ParameterName = "";
-            //outputParameter.SqlDbType = System.Data.SqlDbType.Int;
-            //outputParameter.Direction = System.Data.ParameterDirection.Output;
-
             try
             {
                 conn.Open();
+                cmd.ExecuteNonQuery();
+                lblMessess.Text = "Person deleted";
             }
             catch (Exception ex)
             {
@@ -149,7 +146,7 @@ namespace MVC_Identity_DataLayer_Data
             }
         }
 
-        public PersonDetails UpdatePerson(int id)
+        public void UpdatePerson(int id)
         {
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_update__person", conn);
@@ -165,14 +162,11 @@ namespace MVC_Identity_DataLayer_Data
             cmd.Parameters.AddWithValue("@AddressID", id);
      /////////////////
 
-            //SqlParameter outputParameter = new SqlParameter();
-            //outputParameter.ParameterName = "";
-            //outputParameter.SqlDbType = System.Data.SqlDbType.Int;
-            //outputParameter.Direction = System.Data.ParameterDirection.Output;
-
             try
             {
                 conn.Open();
+                cmd.ExecuteNonQuery();
+                lblMessess.Text = "Person Updated";
             }
             catch (Exception ex)
             {
