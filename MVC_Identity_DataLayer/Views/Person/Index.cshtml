@@ -51,9 +51,8 @@
                                 </a>
                             </td>
                             <td>
-                                <span href="Person/Delete/@obj.PersonID" data-toggle="modal" data-target="#myModal">
-                                    <i class="fa-solid fa-trash"></i>
-                                </span>
+                                <button id="btnDelete" class="btn-danger" onclick="OpenDeleteUserModel(@obj.PersonID, 'Delete User', 'Click DELETE to delete current user')" >Delete</button>
+                                
                             </td>
                         </tr>
                     }
@@ -83,13 +82,49 @@
                     <h4 class="modal-title" id="myModalLabel"></h4>
                 </div>
                 <div class="modal-body text-danger">
-                    Are you sure you want to delete this?
+                    <p id="myModalMsg">
+                        Are you sure you want to delete this?
+                    </p>
+                    
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">DELETE</button>
+                    <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+                    <button id="btnConfirm" type="button" class="btn btn-primary">DELETE</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+@section scripts
+{
+
+    <script>
+        function OpenDeleteUserModel(personid, header, content) {
+            var $confirm = $("#myModal");
+            $confirm.modal('show');
+            $confirm.find("#myModalLabel").html(header);
+            $confirm.find("#myModalMsg").html(content);
+            $confirm.find("#btnConfirm").off('click').click(function () {
+                $confirm.modal("hide");
+                DeleteUser(personid);
+            });
+            $confirm.find("#btnClose").off('click').click(function () {
+                $confirm.modal("hide");
+            });
+        }
+        var DeleteUser = function (id) {
+            $.ajax({
+                url: '../Person/DeletePerson',
+                method: "DELETE",
+                data: JSON.stringify({ 'PersonID': id }),
+                contentType: 'application/json',
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
+}
