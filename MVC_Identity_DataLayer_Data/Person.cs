@@ -10,14 +10,11 @@ namespace MVC_Identity_DataLayer_Data
 {
     public class Person : DataObject
     {
-        public class PersonDetails        {
+        public class PersonDetails
+        {
 
             public int PersonID;
-
-
             public string FirstName;
-
-
             public string LastName;
             public int Age;
             public string EmailID;
@@ -62,41 +59,66 @@ namespace MVC_Identity_DataLayer_Data
 
 
             List<PersonDetails> persons = new List<PersonDetails>();
-            
-                while (rdr.Read())
-                {
-                    PersonDetails person = new PersonDetails();
 
-                    person.PersonID = Convert.ToInt32(rdr["PersonID"]);
-                    person.FirstName = Convert.ToString(rdr["FirstName"]);
-                    person.LastName = Convert.ToString(rdr["LastName"]);
-                    person.Age = Convert.ToInt32(rdr["Age"]);
-                    person.EmailID = Convert.ToString(rdr["EmailID"]);
-                    person.Gender = Convert.ToString(rdr["Gender"]);
-                    person.AddressID = Convert.ToInt32(rdr["AddressID"]);
+            while (rdr.Read())
+            {
+                PersonDetails person = new PersonDetails();
 
-                    persons.Add(person);
+                person.PersonID = Convert.ToInt32(rdr["PersonID"]);
+                person.FirstName = Convert.ToString(rdr["FirstName"]);
+                person.LastName = Convert.ToString(rdr["LastName"]);
+                person.Age = Convert.ToInt32(rdr["Age"]);
+                person.EmailID = Convert.ToString(rdr["EmailID"]);
+                person.Gender = Convert.ToString(rdr["Gender"]);
+                person.AddressID = Convert.ToInt32(rdr["AddressID"]);
 
-                }
+                persons.Add(person);
+
+            }
 
 
             return persons;
 
         }
 
+        public PersonDetails GetPerson(int id)
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("SP_get_person", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
+            cmd.Parameters.AddWithValue("@PersonID", id);
 
+            conn.Open();
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            PersonDetails person = new PersonDetails();
+
+            while (rdr.Read())
+            {
+                person.PersonID = Convert.ToInt32(rdr["PersonID"]);
+                person.FirstName = Convert.ToString(rdr["FirstName"]);
+                person.LastName = Convert.ToString(rdr["LastName"]);
+                person.Age = Convert.ToInt32(rdr["Age"]);
+                person.EmailID = Convert.ToString(rdr["EmailID"]);
+                person.Gender = Convert.ToString(rdr["Gender"]);
+                person.AddressID = Convert.ToInt32(rdr["AddressID"]);
+            }
+
+            return person;
+        }
 
 
         public void InsertPerson(PersonDetails obj)
         {
-           
+
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_insert_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            
+
             cmd.Parameters.AddWithValue("@FirstName", obj.FirstName);
             cmd.Parameters.AddWithValue("@LastName", obj.LastName);
             cmd.Parameters.AddWithValue("@Age", obj.Age);
@@ -118,7 +140,7 @@ namespace MVC_Identity_DataLayer_Data
                 conn.Close();
             }
 
-           
+
         }
 
         public void DeletePerson(int id)
@@ -133,7 +155,7 @@ namespace MVC_Identity_DataLayer_Data
             {
                 conn.Open();
                 cmd.ExecuteNonQuery();
-             
+
             }
 
 
@@ -144,10 +166,10 @@ namespace MVC_Identity_DataLayer_Data
             finally
             {
                 conn.Close();
-               
+
             }
 
-           
+
         }
 
         public void UpdatePerson(PersonDetails obj)
@@ -163,7 +185,7 @@ namespace MVC_Identity_DataLayer_Data
             cmd.Parameters.AddWithValue("@EmailID", obj.EmailID);
             cmd.Parameters.AddWithValue("@Gender", obj.Gender);
             cmd.Parameters.AddWithValue("@AddressID", obj.AddressID);
-          
+
 
             try
             {
