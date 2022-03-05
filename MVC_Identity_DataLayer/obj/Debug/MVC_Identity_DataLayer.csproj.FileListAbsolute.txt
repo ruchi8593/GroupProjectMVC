@@ -54,3 +54,6 @@ C:\ObjectOrientedProgramming\GroupProjectMVC\MVC_Identity_DataLayer\obj\Debug\MV
 C:\ObjectOrientedProgramming\GroupProjectMVC\MVC_Identity_DataLayer\obj\Debug\MVC_Identity_DataLayer.csproj.CopyComplete
 C:\ObjectOrientedProgramming\GroupProjectMVC\MVC_Identity_DataLayer\obj\Debug\MVC_Identity_DataLayer.dll
 C:\ObjectOrientedProgramming\GroupProjectMVC\MVC_Identity_DataLayer\obj\Debug\MVC_Identity_DataLayer.pdb
+C:\ObjectOrientedProgramming\GroupProjectMVC\MVC_Identity_DataLayer\bin\MVC_Identity_DataLayer_Data.dll
+C:\ObjectOrientedProgramming\GroupProjectMVC\MVC_Identity_DataLayer\bin\MVC_Identity_DataLayer_Data.pdb
+C:\ObjectOrientedProgramming\GroupProjectMVC\MVC_Identity_DataLayer\bin\MVC_Identity_DataLayer_Data.dll.config

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MVC_Identity_DataLayer_Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static MVC_Identity_DataLayer_Data.Person;
 
 namespace MVC_Identity_DataLayer.Controllers
 {
@@ -10,6 +12,7 @@ namespace MVC_Identity_DataLayer.Controllers
     {
         public ActionResult Index()
         {
+            
             return View();
         }
 
