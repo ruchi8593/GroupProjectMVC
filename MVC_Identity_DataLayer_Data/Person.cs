@@ -41,12 +41,29 @@ namespace MVC_Identity_DataLayer_Data
             outputParameter.Direction = System.Data.ParameterDirection.Output;
             cmd.Parameters.Add(outputParameter);
 
-            SqlDataReader rdr;
-
             try
             {
                 conn.Open();
-                rdr = cmd.ExecuteReader();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                List<PersonDetails> persons = new List<PersonDetails>();
+
+                while (rdr.Read())
+                {
+                    PersonDetails person = new PersonDetails();
+
+                    person.PersonID = Convert.ToInt32(rdr["PersonID"]);
+                    person.FirstName = Convert.ToString(rdr["FirstName"]);
+                    person.LastName = Convert.ToString(rdr["LastName"]);
+                    person.Age = Convert.ToInt32(rdr["Age"]);
+                    person.EmailID = Convert.ToString(rdr["EmailID"]);
+                    person.Gender = Convert.ToString(rdr["Gender"]);
+                    person.AddressID = Convert.ToInt32(rdr["AddressID"]);
+
+                    persons.Add(person);
+
+                }
+                return persons;
             }
             catch (Exception ex)
             {
@@ -56,28 +73,6 @@ namespace MVC_Identity_DataLayer_Data
             {
                 conn.Close();
             }
-
-
-            List<PersonDetails> persons = new List<PersonDetails>();
-
-            while (rdr.Read())
-            {
-                PersonDetails person = new PersonDetails();
-
-                person.PersonID = Convert.ToInt32(rdr["PersonID"]);
-                person.FirstName = Convert.ToString(rdr["FirstName"]);
-                person.LastName = Convert.ToString(rdr["LastName"]);
-                person.Age = Convert.ToInt32(rdr["Age"]);
-                person.EmailID = Convert.ToString(rdr["EmailID"]);
-                person.Gender = Convert.ToString(rdr["Gender"]);
-                person.AddressID = Convert.ToInt32(rdr["AddressID"]);
-
-                persons.Add(person);
-
-            }
-
-
-            return persons;
 
         }
 
@@ -175,7 +170,7 @@ namespace MVC_Identity_DataLayer_Data
         public void UpdatePerson(PersonDetails obj)
         {
             SqlConnection conn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("SP_update__person", conn);
+            SqlCommand cmd = new SqlCommand("SP_update_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PersonID", obj.PersonID);
