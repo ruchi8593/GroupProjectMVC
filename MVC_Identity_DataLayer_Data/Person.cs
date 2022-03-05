@@ -7,10 +7,11 @@ using System.Web;
 
 namespace MVC_Identity_DataLayer_Data
 {
-    public class Person : DataObject
+   public class Person : DataObject
     {
         public class PersonDetails
         {
+
             public int PersonID;
             public string FirstName;
             public string LastName;
@@ -18,14 +19,15 @@ namespace MVC_Identity_DataLayer_Data
             public string EmailID;
             public string Gender;
             public int AddressID;
+            public string Message;
         }
 
-        public Person():base()
+        public Person() : base()
         {
 
         }
 
-        public PersonDetails GetAllPerson()
+        public List<PersonDetails> GetAllPerson()
         {
 
             SqlConnection conn = new SqlConnection(connectionString);
@@ -38,18 +40,29 @@ namespace MVC_Identity_DataLayer_Data
             outputParameter.Direction = System.Data.ParameterDirection.Output;
             cmd.Parameters.Add(outputParameter);
 
-            conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-
             try
             {
-                da.Fill(ds);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
 
-                lblMessess1.Text = "Total number of people in the database is" + " " + outputParameter.Value.ToString() + ".";
+                List<PersonDetails> persons = new List<PersonDetails>();
 
+                while (rdr.Read())
+                {
+                    PersonDetails person = new PersonDetails();
 
+                    person.PersonID = Convert.ToInt32(rdr["PersonID"]);
+                    person.FirstName = Convert.ToString(rdr["FirstName"]);
+                    person.LastName = Convert.ToString(rdr["LastName"]);
+                    person.Age = Convert.ToInt32(rdr["Age"]);
+                    person.EmailID = Convert.ToString(rdr["EmailID"]);
+                    person.Gender = Convert.ToString(rdr["Gender"]);
+                    person.AddressID = Convert.ToInt32(rdr["AddressID"]);
+
+                    persons.Add(person);
+
+                }
+                return persons;
             }
             catch (Exception ex)
             {
@@ -60,57 +73,57 @@ namespace MVC_Identity_DataLayer_Data
                 conn.Close();
             }
 
+        }
 
-            foreach (DataRow dr in ds.Tables[0].Rows)
+        public PersonDetails GetPerson(int id)
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("SP_get_person", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PersonID", id);
+
+            conn.Open();
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            PersonDetails person = new PersonDetails();
+
+            while (rdr.Read())
             {
-                PersonDetails personDetails = new PersonDetails
-                {
-                    PersonID = Convert.ToInt32(dr["PersonID"]),
-                    FirstName = dr["FirstName"].ToString(),
-                    LastName = dr["FirstName"].ToString(),
-                    Age = Convert.ToInt32(dr["Age"]),
-                    EmailID = dr["EmailID"].ToString(),
-                    Gender = dr["Gender"].ToString(),
-                    AddressID = Convert.ToInt32(dr["AddressID"])
-                };
-                
+                person.PersonID = Convert.ToInt32(rdr["PersonID"]);
+                person.FirstName = Convert.ToString(rdr["FirstName"]);
+                person.LastName = Convert.ToString(rdr["LastName"]);
+                person.Age = Convert.ToInt32(rdr["Age"]);
+                person.EmailID = Convert.ToString(rdr["EmailID"]);
+                person.Gender = Convert.ToString(rdr["Gender"]);
+                person.AddressID = Convert.ToInt32(rdr["AddressID"]);
             }
 
-            return new PersonDetails();
-
+            return person;
         }
-        
-        
 
-        public PersonDetails InsertPerson()
+
+        public void InsertPerson(PersonDetails obj)
         {
-            // To run this query with output paramter, create a stored procedure with PersonID as output parameter
+
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_insert_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            //////to be edited 
-            cmd.Parameters.AddWithValue("@FirstName", id);
-            cmd.Parameters.AddWithValue("@LastName", id);
-            cmd.Parameters.AddWithValue("@Age", id);
-            cmd.Parameters.AddWithValue("@EmailID", id);
-            cmd.Parameters.AddWithValue("@Gender", id);
-            cmd.Parameters.AddWithValue("@AddressID", id);
 
-
-            SqlParameter outputParameter = new SqlParameter();
-            outputParameter.ParameterName = "@PersonID";
-            outputParameter.SqlDbType = System.Data.SqlDbType.Int;
-            outputParameter.Direction = System.Data.ParameterDirection.Output;
-            cmd.Parameters.Add(outputParameter);
-            cmd.ExecuteNonQuery();
-
-            lblMessess.Text = "ID of a new person inserted is" + " " + outputParameter.Value.ToString() +".";
+            cmd.Parameters.AddWithValue("@FirstName", obj.FirstName);
+            cmd.Parameters.AddWithValue("@LastName", obj.LastName);
+            cmd.Parameters.AddWithValue("@Age", obj.Age);
+            cmd.Parameters.AddWithValue("@EmailID", obj.EmailID);
+            cmd.Parameters.AddWithValue("@Gender", obj.Gender);
+            cmd.Parameters.AddWithValue("@AddressID", obj.AddressID);
 
             try
             {
                 conn.Open();
+                cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -120,9 +133,11 @@ namespace MVC_Identity_DataLayer_Data
             {
                 conn.Close();
             }
+
+
         }
 
-        public PersonDetails DeletePerson(int id)
+        public void DeletePerson(int id)
         {
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_delete__person", conn);
@@ -130,15 +145,14 @@ namespace MVC_Identity_DataLayer_Data
 
             cmd.Parameters.AddWithValue("@PersonID", id);
 
-            //SqlParameter outputParameter = new SqlParameter();
-            //outputParameter.ParameterName = "";
-            //outputParameter.SqlDbType = System.Data.SqlDbType.Int;
-            //outputParameter.Direction = System.Data.ParameterDirection.Output;
-
             try
             {
                 conn.Open();
+                cmd.ExecuteNonQuery();
+
             }
+
+
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -146,33 +160,31 @@ namespace MVC_Identity_DataLayer_Data
             finally
             {
                 conn.Close();
+
             }
+
+
         }
 
-        public PersonDetails UpdatePerson(int id)
+        public void UpdatePerson(PersonDetails obj)
         {
             SqlConnection conn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("SP_update__person", conn);
+            SqlCommand cmd = new SqlCommand("SP_update_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            //////to be edited 
-            cmd.Parameters.AddWithValue("@PersonID", id);
-            cmd.Parameters.AddWithValue("@FirstName", id);
-            cmd.Parameters.AddWithValue("@LastName", id);
-            cmd.Parameters.AddWithValue("@Age", id);
-            cmd.Parameters.AddWithValue("@EmailID", id);
-            cmd.Parameters.AddWithValue("@Gender", id);
-            cmd.Parameters.AddWithValue("@AddressID", id);
-     /////////////////
+            cmd.Parameters.AddWithValue("@PersonID", obj.PersonID);
+            cmd.Parameters.AddWithValue("@FirstName", obj.FirstName);
+            cmd.Parameters.AddWithValue("@LastName", obj.LastName);
+            cmd.Parameters.AddWithValue("@Age", obj.Age);
+            cmd.Parameters.AddWithValue("@EmailID", obj.EmailID);
+            cmd.Parameters.AddWithValue("@Gender", obj.Gender);
+            cmd.Parameters.AddWithValue("@AddressID", obj.AddressID);
 
-            //SqlParameter outputParameter = new SqlParameter();
-            //outputParameter.ParameterName = "";
-            //outputParameter.SqlDbType = System.Data.SqlDbType.Int;
-            //outputParameter.Direction = System.Data.ParameterDirection.Output;
 
             try
             {
                 conn.Open();
+                cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
