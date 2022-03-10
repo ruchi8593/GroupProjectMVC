@@ -140,7 +140,7 @@ namespace MVC_Identity_DataLayer_Data
         public void DeletePerson(int id)
         {
             SqlConnection conn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("SP_delete__person", conn);
+            SqlCommand cmd = new SqlCommand("SP_delete_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PersonID", id);
