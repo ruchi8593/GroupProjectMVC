@@ -2,6 +2,8 @@
 
 CREATE DATABASE MVCDatabase 
 
+USE MVCDatabase
+
 
 ---create Province table
 
@@ -36,54 +38,6 @@ CREATE TABLE Person
 	Gender		VARCHAR(25),
 	AddressID	INT FOREIGN KEY REFERENCES Address(AddressID)
 	);
-
-
-
-
-	
-	
-
----Person Table Value
-
-
-INSERT INTO MVCDatabase.dbo.Person  ( FirstName, LastName, Age, EmailID, Gender, AddressID)
-VALUES ( 'Niruxa', 'Padhiyar', 24, 'nilipadhiyar293@gmail.com', 'FeMale' , 1 );
-
-INSERT INTO MVCDatabase.dbo.Person ( FirstName, LastName, Age, EmailID, Gender, AddressID)
-VALUES ( 'Ruchi', 'Trivedi', 26, 'ruchitrivedi@gmail.com', 'FeMale' , 2);
-
-INSERT INTO MVCDatabase.dbo.Person  ( FirstName, LastName, Age, EmailID, Gender, AddressID)
-VALUES ( 'Vivek', 'Kathiriya', 24, 'vivekkathiriya@gmail.com', 'Male' , 3);
-
-INSERT INTO MVCDatabase.dbo.Person  ( FirstName, LastName, Age, EmailID, Gender, AddressID)
-VALUES ( 'Urvashi', 'Kapadiya', 26, 'urvashikapadiya@gmail.com', 'FeMale' , 4);
-
-INSERT INTO MVCDatabase.dbo.Person  (  FirstName, LastName, Age, EmailID, Gender, AddressID)
-VALUES ( 'Nirav', 'Patel', 28, 'niravpatel@gmail.com', 'Male' , 5 );
-
-INSERT INTO MVCDatabase.dbo.Person  (  FirstName, LastName, Age, EmailID, Gender, AddressID)
-VALUES ( 'Harsh', 'Patel', 25, 'harshpatel@gmail.com', 'Male' , 6 );
-
-----Address Table Value
-
-INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
-VALUES ( '431 3rd Ave N', 'Saskatoon', 'S7K4Z3',  13);
-
-INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
-VALUES ( '350 Southill ', 'Kitchener', 'N2A2R1',  9);
-
-INSERT INTO MVCDatabase.dbo.Address( Address, City, PostalCode, ProvinceID)
-VALUES ( '435 4rd Ave S', 'Saskatoon', 'S9K4Z8',  13);
-
-INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
-VALUES ( '450 Wilson', 'Halifax', 'H6K4Z2',  7);
-
-INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
-VALUES ( '89 Evergreen', 'Guelph', 'N2R2N1',  9);
-
-INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
-VALUES ( '101 Knestigton', 'Labrador', 'L7D4Z3',  5);
-
 
 
 ---Province Table Value
@@ -128,29 +82,51 @@ VALUES ( 'Saskatchewan', 'SK');
 INSERT INTO MVCDatabase.dbo.Province(  ProvinceName,ProvinceAbbreviation)
 VALUES ( 'Yukon Territory', 'YT');
 
+----Address Table Value
+
+INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
+VALUES ( '431 3rd Ave N', 'Saskatoon', 'S7K4Z3',  13);
+
+INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
+VALUES ( '350 Southill ', 'Kitchener', 'N2A2R1',  9);
+
+INSERT INTO MVCDatabase.dbo.Address( Address, City, PostalCode, ProvinceID)
+VALUES ( '435 4rd Ave S', 'Saskatoon', 'S9K4Z8',  13);
+
+INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
+VALUES ( '450 Wilson', 'Halifax', 'H6K4Z2',  7);
+
+INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
+VALUES ( '89 Evergreen', 'Guelph', 'N2R2N1',  9);
+
+INSERT INTO MVCDatabase.dbo.Address(  Address, City, PostalCode, ProvinceID)
+VALUES ( '101 Knestigton', 'Labrador', 'L7D4Z3',  5);
+
+---Person Table Value
 
 
-----Execute the query
+INSERT INTO MVCDatabase.dbo.Person  ( FirstName, LastName, Age, EmailID, Gender, AddressID)
+VALUES ( 'Niruxa', 'Padhiyar', 24, 'nilipadhiyar293@gmail.com', 'FeMale' , 1 );
 
-SELECT *
-FROM MVCDatabase.dbo.Person;
+INSERT INTO MVCDatabase.dbo.Person ( FirstName, LastName, Age, EmailID, Gender, AddressID)
+VALUES ( 'Ruchi', 'Trivedi', 26, 'ruchitrivedi@gmail.com', 'FeMale' , 2);
 
-SELECT *
-FROM MVCDatabase.dbo.Address;
+INSERT INTO MVCDatabase.dbo.Person  ( FirstName, LastName, Age, EmailID, Gender, AddressID)
+VALUES ( 'Vivek', 'Kathiriya', 24, 'vivekkathiriya@gmail.com', 'Male' , 3);
 
-SELECT *
-FROM MVCDatabase.dbo.Province;
+INSERT INTO MVCDatabase.dbo.Person  ( FirstName, LastName, Age, EmailID, Gender, AddressID)
+VALUES ( 'Urvashi', 'Kapadiya', 26, 'urvashikapadiya@gmail.com', 'FeMale' , 4);
 
-SELECT FirstName, City, ProvinceName, ProvinceAbbreviation 
-FROM MVCDatabase.dbo.Person 
-JOIN MVCDatabase.dbo.Address
-ON Address.AddressID= Person.AddressID
-JOIN MVCDatabase.dbo.Province
-ON Address.ProvinceID = Province.ProvinceID;
+INSERT INTO MVCDatabase.dbo.Person  (  FirstName, LastName, Age, EmailID, Gender, AddressID)
+VALUES ( 'Nirav', 'Patel', 28, 'niravpatel@gmail.com', 'Male' , 5 );
 
-DROP TABLE dbo.Address
+INSERT INTO MVCDatabase.dbo.Person  (  FirstName, LastName, Age, EmailID, Gender, AddressID)
+VALUES ( 'Harsh', 'Patel', 25, 'harshpatel@gmail.com', 'Male' , 6 );
+
+
+/*DROP TABLE dbo.Address
 DROP TABLE dbo.Person
-DROP TABLE dbo.Province
+DROP TABLE dbo.Province*/
 
 
 

@@ -1,7 +1,9 @@
-
+USE MVCDatabase
+GO
 
 --Create Stored Procedure for inserting data in new row of dbo.Address--
 DROP PROCEDURE IF EXISTS dbo.spInsertIntoAddress
+GO
 
 CREATE PROCEDURE spInsertIntoAddress	
 
@@ -21,12 +23,13 @@ CREATE PROCEDURE spInsertIntoAddress
 	END
 
 	--Execution of Stored Procedure--
-EXEC dbo.spInsertIntoAddress '321 Albert St', 'Waterloo', 'N2L 5V1', 9
+--EXEC dbo.spInsertIntoAddress '321 Albert St', 'Waterloo', 'N2L 5V1', 9
 
 
 
 --Create Stored Procedure to get data from dbo.Address by addressID--
 DROP PROCEDURE IF EXISTS dbo.sp_GetAddressByID
+GO
 
 CREATE PROCEDURE sp_GetAddressByID
 
@@ -41,14 +44,14 @@ CREATE PROCEDURE sp_GetAddressByID
 
 	END
 
-	--Execution of Stored Procedure--
-
-EXECUTE sp_GetAddressByID 6
+--Execution of Stored Procedure--
+--EXECUTE sp_GetAddressByID 6
 
 
 
 --Create Stored Procedure to get list of Addresses from the same province in dbo.Address by ProvinceAbbreviation--
 DROP PROCEDURE IF EXISTS dbo.sp_GetAddressesByProvince
+GO
 CREATE PROCEDURE sp_GetAddressesByProvince
 	
 	@ProvinceAbbreviation VARCHAR(25)
@@ -64,12 +67,11 @@ CREATE PROCEDURE sp_GetAddressesByProvince
 	END
 
 --Execution of Stored Procedure--
-
-EXECUTE  sp_GetAddressesByProvince 'ON'
+--EXECUTE  sp_GetAddressesByProvince 'ON'
 
 --Create Stored Procedure to count total number of addresses from dbo.Address--
 DROP PROCEDURE IF EXISTS dbo.sp_GetAddressCount
-
+GO
 CREATE PROCEDURE sp_GetAddressCount
 
 	@AddressCount INT OUTPUT
@@ -82,13 +84,14 @@ CREATE PROCEDURE sp_GetAddressCount
 
 	END
 
-	--Execution of Stored Procedure--
-DECLARE @Count INT
+--Execution of Stored Procedure--
+--DECLARE @Count INT
 EXECUTE sp_GetAddressCount @Count
 
 
 --Create Stored Procedure for updating data in dbo.Address by AddressID--
 DROP PROCEDURE IF EXISTS dbo.sp_UpdateAddressByAddressID
+GO
 CREATE PROCEDURE sp_UpdateAddressByAddressID
 
 	@AddressId INT,
@@ -112,11 +115,12 @@ CREATE PROCEDURE sp_UpdateAddressByAddressID
 			SELECT *FROM dbo.Address
 	END
 
-	--Execution of Stored Procedure--
-EXECUTE sp_UpdateAddressByAddressID 2,'210 Albert St', Waterloo, 'L5C 3V5',3
+--Execution of Stored Procedure--
+--EXECUTE sp_UpdateAddressByAddressID 2,'210 Albert St', Waterloo, 'L5C 3V5',3
 
 --Create Stored Procedure to delete data in dbo.Address by AddressID--
 DROP PROCEDURE IF EXISTS dbo.sp_DeleteAddressByAddressID
+GO
 CREATE PROCEDURE sp_DeleteAddressByAddressID
 
 	@AddressId INT
@@ -131,5 +135,5 @@ CREATE PROCEDURE sp_DeleteAddressByAddressID
 			SELECT *FROM dbo.Address
 	END
 
-	--Execution of Stored Procedure--
-EXECUTE sp_DeleteAddressByAddressID 2
+--Execution of Stored Procedure--
+--EXECUTE sp_DeleteAddressByAddressID 2

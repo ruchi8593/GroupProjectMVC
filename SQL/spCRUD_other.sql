@@ -1,4 +1,6 @@
 ------------------Get All Info by email id---------------------
+USE MVCDatabase
+GO
 
 Drop procedure IF Exists spGetAllInfoByEmailId
 GO
@@ -18,7 +20,7 @@ WHERE P.EmailID = @EmailId
 END
 END
 
-EXECUTE spGetAllInfoByEmailId 'harshpatel@gmail.com'
+--EXECUTE spGetAllInfoByEmailId 'harshpatel@gmail.com'
 
 
 
@@ -40,7 +42,7 @@ WHERE Gender = @gender
 ORDER BY LastName, FirstName, AGE ASC
 END
 
-EXECUTE spGetPersonInfoByGender 'Male'
+--EXECUTE spGetPersonInfoByGender 'Male'
 
 
 ------------ Get population Province wise------------------
@@ -61,10 +63,10 @@ WHERE Prov.ProvinceName = @Province)
 END
 
 -------------Execution-------------------------
-DECLARE @count int
+/*DECLARE @count int
 EXECUTE GetPopulationByProvince @Province = "Ontario" ,
 @Population = @count OUTPUT
-SELECT @count AS POPULATION
+SELECT @count AS POPULATION*/
 
 
 
@@ -83,10 +85,10 @@ FROM Person
 WHERE AGE = @AGE)
 END
 
-DECLARE @count int
+/*DECLARE @count int
 EXECUTE GetCountByAge @Age = 26,
 @TotalNumber = @count OUTPUT
-SELECT @count AS 'CountByAge'
+SELECT @count AS 'CountByAge'*/
 
 --SELECT * FROM PERSON
 --SELECT * FROM Address
